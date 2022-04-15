@@ -1,56 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React from "react";
+import "./App.css";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Stack, Container, Typography, Box } from "@mui/material";
+import RegistrationTextinput from "./components/RegistrationTextinput";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <Container sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          component="form"
+          maxWidth="sm"
+          sx={{
+            boxShadow: 1,
+            width: 300,
+            padding: 2,
+          }}
+        >
+          <Typography gutterBottom align="center" variant="h3" component="h1">
+            Welcome
+          </Typography>
+          <Stack spacing={2}>
+            <RegistrationTextinput
+              label="Username"
+              helperText="Must begin with a letter and be at least 5-characters long (excluding special characters such as #, $, % etc.)."
+              validation={/^\w[a-zA-Z0-9]{3,}[a-zA-Z0-9]$/}
+            />
+            <RegistrationTextinput
+              label="Email"
+              helperText="Must be a valid email"
+              validation={/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+[.][a-z]+$/}
+            />
+            <RegistrationTextinput
+              label="Password"
+              helperText="Must be at least 8 characters long, including at least 1 uppercase character and at least 1 special character."
+              validation={/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\.@$!%*?&])[A-Za-z\d@.$!%*?&]{8,}$/}
+       />
+
+            
+          </Stack>
+        </Box>
+      </Container>
     </div>
   );
 }
