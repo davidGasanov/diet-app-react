@@ -1,14 +1,18 @@
 import React from "react";
 import "./App.css";
 // import CssBaseline from "@mui/material/CssBaseline";
-import Registration from "./components/pages/Registration"
-import Login from "./components/pages/Login"
+import Registration from "./Registration";
+import Login from "./Login";
 
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-     <Login/>
+      <Routes>
+        <Route path="/Register" element={<Registration />} />
+        <Route path="/Login" element={<Login />} />
+      </Routes>
     </div>
   );
 }

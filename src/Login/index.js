@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Stack,
@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 
 function index() {
   const handleChange = () => {
@@ -60,8 +60,12 @@ function index() {
           >
             Sign in
           </Button>
-          <Typography>Already have an account?  <Link component={RouterLink} to="../Registration">Register instead</Link></Typography>
-         
+          <Typography>
+            Already have an account?{" "}
+            <Link component={RouterLink} to="../Register">
+              Register instead
+            </Link>
+          </Typography>
         </Stack>
       </Box>
     </Container>
