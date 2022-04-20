@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Stack, Container, Typography, Box } from "@mui/material";
-import RegistrationTextinput from "../../RegistrationTextinput";
+import RegistrationTextinput from "./RegistrationTextinput";
 
 
 function index() {
@@ -19,7 +19,7 @@ function index() {
       }}
     >
       <Typography gutterBottom align="center" variant="h3" component="h1">
-        Welcome
+        Create a new user
       </Typography>
       <Stack spacing={2}>
         <RegistrationTextinput
