@@ -1,28 +1,53 @@
 import React from "react";
 
+import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+
 import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Stack,
   Container,
   Typography,
-  Box,
+  FormControl,
   TextField,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@mui/material/Link";
 
-function index() {
+function Login() {
+
+  const navigate = useNavigate();
+
   const handleChange = () => {
     return null;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const reqBody = {
+      identifier: e.target[0].value,
+      password: e.target[1].value,
+    };
+
+
+    const {data} = await axios.post('http://localhost:1337/api/auth/local', reqBody).then(navigate('/userposts')).catch(e.message);
+
+    console.log(e.target);
+    console.log(data);
   };
 
   return (
     <Container
       sx={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}
     >
-      <Box
+      <FormControl
         component="form"
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
         sx={{
           boxShadow: 2,
           padding: 2,
@@ -42,7 +67,8 @@ function index() {
           <TextField
             required
             onChange={handleChange}
-            label={"Username"}
+            label={"Email"}
+            type="email"
             variant="standard"
           />
           <TextField
@@ -53,7 +79,7 @@ function index() {
             variant="standard"
           />
           <Button
-            tpye="submit"
+            type="submit"
             variant="contained"
             size="large"
             color="primary"
@@ -67,9 +93,9 @@ function index() {
             </Link>
           </Typography>
         </Stack>
-      </Box>
+      </FormControl>
     </Container>
   );
 }
 
-export default index;
+export default Login;
