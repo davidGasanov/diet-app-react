@@ -1,10 +1,9 @@
 import React from "react";
-
 import axios from "axios";
 
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import { Link as RouterLink } from "react-router-dom";
+// MUI
 import {
   Button,
   Stack,
@@ -16,9 +15,19 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@mui/material/Link";
 
-function Login() {
+// REDUX
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import actionCreators from "../state";
 
+function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { loginUser, logOutUser, setJwt, removeJwt } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   const handleChange = () => {
     return null;
@@ -32,12 +41,21 @@ function Login() {
       password: e.target[1].value,
     };
 
+    const {data} = await axios
+      .post("http://localhost:1337/api/auth/local", reqBody)
+      .then((res) => {
+        // res.status == 200 && navigate("/userposts");
+      }).catch((err) => console.log(err));
 
-    const {data} = await axios.post('http://localhost:1337/api/auth/local', reqBody).then(navigate('/userposts')).catch(e.message);
 
-    console.log(e.target);
-    console.log(data);
+      setTimeout(() => {
+        console.log(data);
+      }, 1000);
+ 
+
   };
+
+
 
   return (
     <Container
