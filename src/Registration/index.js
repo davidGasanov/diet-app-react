@@ -1,7 +1,9 @@
 import React from "react";
 
-import { Stack, Container, Typography, Box } from "@mui/material";
+import { Stack, Container, Typography, Box, Link,Button } from "@mui/material";
 import RegistrationTextinput from "./RegistrationTextinput";
+
+import {Link as RouterLink} from "react-router-dom";
 
 function index() {
   return (
@@ -40,6 +42,20 @@ function index() {
               /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\.@$!%*?&])[A-Za-z\d@.$!%*?&]{8,}$/
             }
           />
+                    <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            color="primary"
+          >
+            Register
+          </Button>
+          <Typography>
+            Already have an account?{" "}
+            <Link component={RouterLink} to="../Login">
+              Login instead
+            </Link>
+          </Typography>
         </Stack>
       </Box>
     </Container>

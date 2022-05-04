@@ -12,15 +12,33 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import {Link as RouterLink}from "react-router-dom"
 
-const pages = ["Browse food", "Custom daily plan"];
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import actionCreators from "../state";
+
+import Link from "@mui/material/Link";
 
 
-const ResponsiveAppBar = () => {
 
 
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+function ResponsiveAppBar() {
+  const dispatch = useDispatch();
+
+  const { logOutUser, removeJwt } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+
+  const logOut = () => {
+    removeJwt();
+    logOutUser();
+  };
+
+  const pages = ["Browse food", "Custom daily plan"];
+
+  const settings = [{ label: "Logout", action: logOut }];
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -141,8 +159,14 @@ const ResponsiveAppBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                  <MenuItem
+                    key={setting.label}
+                    onClick={() => {
+                      logOut();
+                      handleCloseUserMenu();
+                    }}
+                  >
+                    <Typography textAlign="center">{setting.label}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -158,7 +182,7 @@ const ResponsiveAppBar = () => {
                   },
                 }}
               >
-                Login
+                <Link component={RouterLink} to="../Login">Login</Link>
               </Button>
               <Button
                 sx={{
@@ -169,7 +193,7 @@ const ResponsiveAppBar = () => {
                   },
                 }}
               >
-                Register
+                 <Link component={RouterLink} to="../Register">Register</Link>
               </Button>
             </Box>
           )}
@@ -177,5 +201,5 @@ const ResponsiveAppBar = () => {
       </Container>
     </AppBar>
   );
-};
+}
 export default ResponsiveAppBar;
