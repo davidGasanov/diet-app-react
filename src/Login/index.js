@@ -3,6 +3,8 @@ import axios from "axios";
 
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
+import { useState } from "react";
+
 // MUI
 import {
   Button,
@@ -11,18 +13,24 @@ import {
   Typography,
   FormControl,
   TextField,
+  Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@mui/material/Link";
 
 // REDUX
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actionCreators from "../state";
+
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const loggedIn = useSelector(state=>state.username!=="");
+
+  const [loginError, setLoginError] = useState(false);
 
   const { loginUser, logOutUser, setJwt, removeJwt } = bindActionCreators(
     actionCreators,
@@ -41,21 +49,17 @@ function Login() {
       password: e.target[1].value,
     };
 
-    const {data} = await axios
+    const { data } = await axios
       .post("http://localhost:1337/api/auth/local", reqBody)
-      .then((res) => {
-        // res.status == 200 && navigate("/userposts");
-      }).catch((err) => console.log(err));
+      .catch((err) => {
+        setLoginError(true);
+        console.log(err);
+      });
 
-
-      setTimeout(() => {
-        console.log(data);
-      }, 1000);
- 
-
+    loginUser(data.user.username);
+    setJwt(data.jwt);
+    navigate("../userposts")
   };
-
-
 
   return (
     <Container
@@ -82,6 +86,7 @@ function Login() {
             color="primary"
             fontSize="large"
           />
+
           <TextField
             required
             onChange={handleChange}
@@ -96,6 +101,9 @@ function Login() {
             label={"Password"}
             variant="standard"
           />
+          {loginError ? (
+            <Alert severity="error">Invalid Credentials</Alert>
+          ) : null}
           <Button
             type="submit"
             variant="contained"
@@ -105,7 +113,7 @@ function Login() {
             Sign in
           </Button>
           <Typography>
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <Link component={RouterLink} to="../Register">
               Register instead
             </Link>
