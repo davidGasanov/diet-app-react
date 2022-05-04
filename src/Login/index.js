@@ -23,19 +23,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actionCreators from "../state";
 
-
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const loggedIn = useSelector(state=>state.username!=="");
-
   const [loginError, setLoginError] = useState(false);
 
-  const { loginUser, logOutUser, setJwt, removeJwt } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { loginUser, setJwt } = bindActionCreators(actionCreators, dispatch);
 
   const handleChange = () => {
     return null;
@@ -58,7 +52,7 @@ function Login() {
 
     loginUser(data.user.username);
     setJwt(data.jwt);
-    navigate("../userposts")
+    navigate("../userposts");
   };
 
   return (
