@@ -11,8 +11,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-import { useState } from "react";
-import {Link as RouterLink}from "react-router-dom"
+import { useState  } from "react";
+import {Link as RouterLink, useNavigate}from "react-router-dom"
 
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -31,9 +31,12 @@ function ResponsiveAppBar() {
     dispatch
   );
 
+  const navigate = useNavigate();
+
   const logOut = () => {
     removeJwt();
     logOutUser();
+    navigate("../Login")
   };
 
   const pages = ["Browse food", "Custom daily plan"];

@@ -1,7 +1,14 @@
 import { useState, useEffect, React } from "react";
 import { TextField } from "@mui/material";
 
-function RegistrationTextinput({ updateValidList, validList, label, helperText, validation }) {
+function RegistrationTextinput({
+  type,
+  updateValidList,
+  validList,
+  label,
+  helperText,
+  validation,
+}) {
   const [valid, setValid] = useState(false);
 
   const [showError, setShowError] = useState(false);
@@ -11,20 +18,16 @@ function RegistrationTextinput({ updateValidList, validList, label, helperText, 
     setValid(validation.test(e.target.value));
   };
 
-  useEffect(()=>{
-  
-  if(valid && !validList.includes(label)){
-    updateValidList([...validList, label])
-  } else if (!valid && validList.includes(label)){
-    const updatedValidList = [...validList]
-    const index = validList.indexOf(label);
-    updatedValidList.splice(index,1);
-    updateValidList(updatedValidList);
-
-  }
-
-
-  },[valid])
+  useEffect(() => {
+    if (valid && !validList.includes(label)) {
+      updateValidList([...validList, label]);
+    } else if (!valid && validList.includes(label)) {
+      const updatedValidList = [...validList];
+      const index = validList.indexOf(label);
+      updatedValidList.splice(index, 1);
+      updateValidList(updatedValidList);
+    }
+  }, [valid]);
 
   const inputProps = {
     onBlur: () => {
@@ -43,6 +46,7 @@ function RegistrationTextinput({ updateValidList, validList, label, helperText, 
       helperText={showError && helperText}
       label={label}
       variant="outlined"
+      type={type}
     />
   );
 }

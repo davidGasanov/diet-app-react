@@ -26,10 +26,9 @@ import actionCreators from "../state";
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { loginUser, setJwt } = bindActionCreators(actionCreators, dispatch);
 
   const [loginError, setLoginError] = useState(false);
-
-  const { loginUser, setJwt } = bindActionCreators(actionCreators, dispatch);
 
   const handleChange = () => {
     return null;
