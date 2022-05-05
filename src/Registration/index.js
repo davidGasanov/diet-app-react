@@ -11,15 +11,13 @@ import {
   FormControl,
 } from "@mui/material";
 import RegistrationTextinput from "./RegistrationTextinput";
-
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-
 import { Link as RouterLink } from "react-router-dom";
+
 
 function Registration() {
 
   const [pageValid, setPageValid] = useState(false);
-
   const [validList, updateValidList] = useState([])
 
   const handleSubmit = async (e) =>{
@@ -34,9 +32,7 @@ function Registration() {
 
   }
 
-  const valid = [];
-
-  useEffect(()=>{ console.log(validList); if(validList.length===3){setPageValid(true)}},[validList])
+  useEffect(()=>{ console.log("List of valids: ", validList); if(validList.length===3){setPageValid(true)}},[validList])
 
   console.log("Page validity: " + pageValid)
 
@@ -60,8 +56,6 @@ function Registration() {
         <Typography gutterBottom align="center" variant="h4" component="h1">
           Create a new user
         </Typography>
-
-       
         <Stack spacing={2}>
         <AppRegistrationIcon  sx={{ alignSelf: "center" }}
             color="primary"
