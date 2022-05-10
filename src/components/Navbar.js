@@ -73,7 +73,7 @@ function ResponsiveAppBar() {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
-            LOGO
+            MDD
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -118,7 +118,7 @@ function ResponsiveAppBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            LOGO
+            MDD
           </Typography>
           <Box
             sx={{
