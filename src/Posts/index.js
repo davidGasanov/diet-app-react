@@ -7,18 +7,18 @@ import Card from "../components/Card";
 
 function index() {
   return (
-    <Container sx={{display:"flex", justifyContent: "center"}}>
-      <Grid sx={{ flexGrow: 1 }} maxWidth="xl" container spacing={10}>
-        <Grid justify="center" item xs={12} sm={6} md={4}>
+    <Container sx={{display:"flex", justifyContent: "center", padding: '30px'}}>
+      <Grid sx={{ flexGrow: 1 }} maxWidth="xl" container spacing={5}>
+        <Grid item xs={12} sm={6} md={4}  align="center">
           <Card />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} align="center">
           <Card />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} align="center">
           <Card />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} align="center">
           <Card />
         </Grid>
       </Grid>

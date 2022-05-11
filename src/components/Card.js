@@ -6,22 +6,21 @@ import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions, Box, Divider } from "@mui/material";
 
 import { GiMeat } from "react-icons/gi";
-import {GoPencil} from "react-icons/go"
 
 import pineappleImg from "../imgs/pineapple-rice.jpg";
 
 export default function MultiActionAreaCard() {
   return (
-    <Card sx={{ maxWidth: 300 }}>
+    <Card sx={{ maxWidth: 270}} align="left">
       <CardActionArea>
         <CardMedia
           component="img"
-          height="200"
+          height="150"
           image={pineappleImg}
           alt="pineapple-rice"
         />
         <CardContent >
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom align="center" variant="h5" component="div">
             Lizard
           </Typography>
           <Typography variant="body2" color="text.secondary">
