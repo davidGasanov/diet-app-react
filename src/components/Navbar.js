@@ -39,7 +39,7 @@ function ResponsiveAppBar() {
     navigate("../Login")
   };
 
-  const pages = ["Browse food", "Custom daily plan"];
+  const pages = [{name: "Browse food", url: "../Food"}, {name: "Custom daily plan", url: "../"}];
 
   const settings = [{ label: "Logout", action: logOut }];
 
@@ -106,8 +106,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem component={RouterLink} to={page.url} key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -129,11 +129,13 @@ function ResponsiveAppBar() {
           >
             {pages.map((page) => (
               <Button
-                key={page}
+                component={RouterLink}
+                to={page.url}
+                key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, mx: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>

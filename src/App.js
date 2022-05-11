@@ -4,7 +4,7 @@ import "./App.css";
 
 //PAGES
 import Registration from "./Registration";
-import Posts from "./Posts";
+import Food from "./Food";
 import Login from "./Login";
 
 //COMPONENTS
@@ -29,10 +29,18 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="/userposts" element={<Posts />} />
-        <Route path="/Register" element={userLoggedIn ? <Navigate to="/userposts" /> : <Registration />}/>
-        <Route path="/Login" element={userLoggedIn ? <Navigate to="/userposts" /> : <Login />}/>
-        </Routes>
+        <Route path="/Food" element={<Food />} />
+        <Route
+          path="/Register"
+          element={
+            userLoggedIn ? <Navigate to="/userposts" /> : <Registration />
+          }
+        />
+        <Route
+          path="/Login"
+          element={userLoggedIn ? <Navigate to="/userposts" /> : <Login />}
+        />
+      </Routes>
     </div>
   );
 }
