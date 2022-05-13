@@ -40,7 +40,7 @@ export default function MultiActionAreaCard({ data }) {
         return <RiLeafFill color="#3fcc23" size={28} />;
       case "Dessert":
         return <GiCupcake color="#e664e8" size={30} />;
-      case "Alcoholic beverage":
+      case "Alcohol":
         return <BiDrink color="#e86485" size={30} />;
       case "Beverage":
         return <BsCupStraw color="#59c5de" size={30} />;
