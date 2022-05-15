@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { Skeleton } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -22,18 +23,28 @@ function Foodscontainer() {
 
   const [foodList, setFoodList] = useState([]);
   const [foodError, setFoodError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const getFoodList = async () => {
+    setLoading(true);
+    const { data } = await axios
+      .get("http://localhost:1337/api/foods?populate=*")
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setFoodError(true);
+      });
+    console.log("Axios data:", data);
+    populateFoods(data);
+    setLoading(false);
+    setFoodList(data.data);
+  };
 
   useEffect(() => {
-    const getFoodList = async () => {
-      const { data } = await axios.get(
-        "http://localhost:1337/api/foods?populate=*"
-      );
-      console.log("Axios data:", data);
-      populateFoods(data);
-      setFoodList(data.data);
-    };
-
-    getFoodList();
+    setLoading(true);
+    setTimeout(() => {
+      getFoodList();
+    }, 3000);
   }, []);
 
   console.log("Foodlist is: ", foodList);
@@ -60,62 +71,58 @@ function Foodscontainer() {
 
   return (
     <Container sx={{ justifyContent: "center", padding: "30px" }}>
-      {foodList !== [] ? (
-        <Grid
-          sx={{ flexGrow: 1 }}
-          maxWidth="xl"
-          container
-          spacing={5}
-          rowSpacing={5}
-        >
-          <Grid component="form" onSubmit={handleSearch} item xs={12}>
-            <OutlinedInput
+      <Grid
+        sx={{ flexGrow: 1 }}
+        maxWidth="xl"
+        container
+        spacing={5}
+        rowSpacing={5}
+      >
+        <Grid component="form" onSubmit={handleSearch} item xs={12}>
+          <OutlinedInput
             placeholder="Search for food and drinks"
-              fullWidth
-              onChange={(e)=>{if (e.target.value===""){setFoodList(storeFoodList); setFoodError(false)}}}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    type="submit"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
+            fullWidth
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setFoodList(storeFoodList);
+                setFoodError(false);
               }
-            />
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  type="submit"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </Grid>
+
+        {foodError && (
+          <Grid item xs={12}>
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>No items have been found.
+            </Alert>
           </Grid>
+        )}
 
-          {foodError && (
-            <Grid item xs={12}>
-              <Alert severity="error">
-                <AlertTitle>Error</AlertTitle>No items have been found.
-              </Alert>
-            </Grid>
-          )}
-
-          {foodList.map((food, index) => (
+        {loading ? (
+          [...Array(6)].map((n) => (
+              <Grid key={n} item xs={12} sm={6} md={4} lg={3} align="center">
+                <Skeleton variant="rectangular" height={200} />
+              </Grid>
+            ))) : (
+          foodList.map((food, index) => (
             <Grid key={index} item xs={12} sm={6} md={4} lg={3} align="center">
               <Card data={food.attributes} />
             </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Box
-          sx={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Box>
-            <LinearProgress sx={{ minWidth: "50vw" }} />
-          </Box>
-        </Box>
-      )}
+          ))
+        )}
+      </Grid>
     </Container>
   );
 }
