@@ -28,7 +28,7 @@ export default function MultiActionAreaCard({ data }) {
     recipe,
     title,
     image,
-    users_permissions_user,
+    user,
   } = data;
 
   const imgUrl = image.data.attributes.url;
@@ -124,7 +124,7 @@ export default function MultiActionAreaCard({ data }) {
             sx={{ marginLeft: "20px", marginRight: "10px" }}
             variant="body1"
           >
-            {users_permissions_user.data.attributes.username}
+            {user.data.attributes.username}
           </Typography>{" "}
         </Box>
       </CardContent>

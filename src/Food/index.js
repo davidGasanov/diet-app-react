@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/system";
-import LinearProgress from "@mui/material/LinearProgress";
 import Container from "@mui/material/Container";
 import Card from "../components/Card";
 import axios from "axios";
@@ -11,19 +10,29 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { Skeleton } from "@mui/material";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Slider from "@mui/material/Slider";
+import { Skeleton, Typography } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actionCreators from "../state";
+//import { is } from "immer/dist/internal";
 
 function Foodscontainer() {
   const dispatch = useDispatch();
   const { populateFoods } = bindActionCreators(actionCreators, dispatch);
 
+  // Local state
   const [foodList, setFoodList] = useState([]);
   const [foodError, setFoodError] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [queryParams, setQueryParams] = useState({
+    category: ["Meat-Based", "Vegetarian", "Dessert", "Alcohol", "Beverage"],
+    calories: [0, 2000],
+  });
 
   const getFoodList = async () => {
     setLoading(true);
@@ -42,9 +51,7 @@ function Foodscontainer() {
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      getFoodList();
-    }, 3000);
+    getFoodList();
   }, []);
 
   console.log("Foodlist is: ", foodList);
@@ -53,20 +60,35 @@ function Foodscontainer() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(e.target[0].value);
-    const query = e.target[0].value;
-    console.log("Store Food List: ", storeFoodList);
 
-    if (query !== "") {
-      const rx = new RegExp(query, "i");
-      const newFoodList = storeFoodList.filter((food) =>
-        rx.test(food.attributes.title)
-      );
-      setFoodList(newFoodList);
-      setFoodError(!newFoodList.length);
-    } else {
-      setFoodList(storeFoodList);
-    }
+    console.log("EVENt", e.target);
+
+    const categoryInput = [e.target[1].value];
+
+    setQueryParams({
+      category: categoryInput,
+      calories: { min: 0, max: Number.POSITIVE_INFINITY },
+    });
+
+    console.log("queryParams:", queryParams);
+
+    const query = e.target[2].value ? e.target[2].value : ".*";
+    console.log("Store Food List: ", storeFoodList);
+    const rx = new RegExp(query, "i");
+    const newFoodList = storeFoodList.filter((food) => {
+      if (
+        rx.test(food.attributes.title) &&
+        food.attributes.calories >= queryParams.calories[0] &&
+        food.attributes.calories <= queryParams.calories[1] &&
+        categoryInput.includes(food.attributes.category)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    setFoodList(newFoodList);
+    setFoodError(!newFoodList.length);
   };
 
   return (
@@ -78,8 +100,33 @@ function Foodscontainer() {
         spacing={5}
         rowSpacing={5}
       >
-        <Grid component="form" onSubmit={handleSearch} item xs={12}>
-          <OutlinedInput
+        <Grid component="form" onSubmit={handleSearch} item xs={12} container>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography>Calorie range:</Typography>
+            <Slider
+              valueLabelDisplay="auto"
+              value={queryParams.calories}
+            />
+          </Grid>
+          <Grid component={Select} item xs={12} md={2}>
+            <MenuItem value={"Meat-Based"}>Meat-Based</MenuItem>
+            <MenuItem value={"Vegetarian"}>Vegetarian</MenuItem>
+          </Grid>
+
+          <Grid
+            component={OutlinedInput}
+            item
+            xs={12}
+            md={7}
             placeholder="Search for food and drinks"
             fullWidth
             onChange={(e) => {
@@ -110,18 +157,25 @@ function Foodscontainer() {
           </Grid>
         )}
 
-        {loading ? (
-          [...Array(6)].map((n) => (
+        {loading
+          ? [...Array(6)].map((n) => (
               <Grid key={n} item xs={12} sm={6} md={4} lg={3} align="center">
                 <Skeleton variant="rectangular" height={200} />
               </Grid>
-            ))) : (
-          foodList.map((food, index) => (
-            <Grid key={index} item xs={12} sm={6} md={4} lg={3} align="center">
-              <Card data={food.attributes} />
-            </Grid>
-          ))
-        )}
+            ))
+          : foodList.map((food, index) => (
+              <Grid
+                key={index}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                align="center"
+              >
+                <Card data={food.attributes} />
+              </Grid>
+            ))}
       </Grid>
     </Container>
   );
